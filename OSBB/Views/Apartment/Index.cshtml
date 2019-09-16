@@ -1,0 +1,81 @@
+﻿@model IEnumerable<OSBB_BLL.Models.ApartmentDTO>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Список квартир</h2>
+
+<p>
+    @Html.ActionLink("Додати нову", "Edit", new { id = 0 }, new { @class = "btn-sm btn-primary"})
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ApartmentNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OwnerName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Username)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalSquare)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ApartmentNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OwnerName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Username)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalSquare)
+        </td>
+        <td>
+            @Html.ActionLink("Редагувати", "Edit", new { id = item.ApartmentId }, new { @class = "btn-sm btn-primary" })
+            @Html.ActionLink("Детальніше", "Details", new { id = item.ApartmentId }, new { @class = "btn-sm btn-primary" })
+            @Html.ActionLink("Видалити", "Delete", new { id = item.ApartmentId }, new { @class = "btn-sm btn-primary delApartment", apartment_id = item.ApartmentId })
+        </td>
+    </tr>
+}
+
+</table>
+
+@section Scripts{
+    
+    <script type="text/javascript">
+
+        $(function () {
+            $(".delApartment").click(function (e) {
+                e.preventDefault()
+                if (confirm('Дійсно видалити запис?')) {
+                    $.ajax({
+                        url: "@Url.Action("Delete", "Apartment")",
+                        data: { id: $(this).attr('apartment-id') },
+                        type: 'POST',
+                        success: function (data) {
+                            if (data = "OK")
+                                window.location.href = "@Url.Action("Index", "Apartment")"
+                            else
+                                alert("Error")
+                        },
+                        error: function (data) {
+                            alert(data);
+                        }
+                    });
+                }
+            });
+        });
+
+    </script>
+    
+    }

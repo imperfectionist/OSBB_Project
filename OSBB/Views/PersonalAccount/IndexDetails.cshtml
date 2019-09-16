@@ -1,0 +1,26 @@
+﻿@model OSBB.Models.UserPrivateAccount
+
+@foreach (var util in Model.Utilities)
+{
+    <div class="row">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h5 class="panel-title">@util.UtilityName</h5>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-5 text-center">
+                    @Html.DisplayNameFor(model => util.MeterIndexStart)<br />
+                    <b>@Html.DisplayFor(model => util.MeterIndexStart)</b>
+                </div>
+                <div class="col-md-5 text-center">
+                    @Html.DisplayNameFor(model => util.MeterIndexEnd)<br />
+                    <b>@Html.DisplayFor(model => util.MeterIndexEnd)</b>
+                </div>
+                <div class="col-md-2 text-center">
+                    @Html.DisplayNameFor(model => util.PaymentSum)<br />
+                    <b>@Html.DisplayFor(model => util.PaymentSum)</b>
+                </div>
+            </div>
+        </div>
+    </div>
+}

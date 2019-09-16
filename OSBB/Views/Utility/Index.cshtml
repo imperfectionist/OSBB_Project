@@ -1,0 +1,80 @@
+﻿@model IEnumerable<OSBB_BLL.Models.UtilityDTO>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Послуги</h2>
+
+<p>
+    @Html.ActionLink("Створити нову", "Edit", new { id = 0 }, new { @class = "btn-sm btn-primary"})
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UtilityName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UnitName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UtilityPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UtilityNorm)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.UtilityName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UnitName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UtilityPrice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UtilityNorm)
+        </td>
+        <td>
+            @Html.ActionLink("Редагувати", "Edit", new { id = item.UtilityId }, new { @class = "btn-sm btn-primary" })
+            @Html.ActionLink("Видалити", "Delete", new { id = item.UtilityId }, new { @class = "btn-sm btn-primary delUtility", utility_id = item.UtilityId })
+        </td>
+    </tr>
+}
+
+</table>
+
+@section Scripts{
+    
+    <script type="text/javascript">
+
+        $(function () {
+            $(".delUtility").click(function (e) {
+                e.preventDefault()
+                if (confirm('Дійсно видалити запис?')) {
+                    $.ajax({
+                        url: "@Url.Action("Delete", "Utility")",
+                        data: { id: $(this).attr('utility-id') },
+                        type: 'POST',
+                        success: function (data) {
+                            if (data == "OK")
+                                window.location.href = "@Url.Action("Index", "Utility")"
+                            else
+                                alert("Error")
+                        },
+                        error: function (data) {
+                            alert(data)
+                        }
+                    });
+                }
+            });
+        });
+        
+    </script>
+    
+    }

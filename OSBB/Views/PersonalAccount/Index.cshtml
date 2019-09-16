@@ -1,0 +1,66 @@
+﻿@model OSBB.Models.UserPrivateAccount
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Особистий кабінет</h2>
+
+<div>
+    <h4>Квартира № @ViewBag.ApartmentNumber, О/Р № @ViewBag.AccountNumber</h4>
+    <hr />
+    @Html.HiddenFor(model => model.ApartmentId)
+    <div class="row paymentDetails">
+        <div class="col-md-9 dropdown">
+            <h4>
+                Комунальні послуги за:
+                @Html.DropDownListFor(model => model.SelectedMonth, Model.AvailableMonths as SelectList, "Оберіть місяць", new { @class = "btn btn-default dropdown-toggle form-control monthsList", month_id = Model.SelectedMonth })
+            </h4>
+        </div>
+        <div class="col-md-3">
+            <h4>@Html.DisplayNameFor(model => model.TotalCost) <b>@Html.DisplayFor(model => model.TotalCost)</b></h4>
+        </div>
+    </div>
+    <div class="form-group">
+        @foreach (var util in Model.Utilities)
+        {
+            <div class="row">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h5 class="panel-title">@util.UtilityName</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-md-5 text-center">
+                            @Html.DisplayNameFor(model => util.MeterIndexStart)<br />
+                            <b>@Html.DisplayFor(model => util.MeterIndexStart)</b>
+                        </div>
+                        <div class="col-md-5 text-center">
+                            @Html.DisplayNameFor(model => util.MeterIndexEnd)<br />
+                            <b>@Html.DisplayFor(model => util.MeterIndexEnd)</b>
+                        </div>
+                        <div class="col-md-2 text-center">
+                            @Html.DisplayNameFor(model => util.PaymentSum)<br />
+                            <b>@Html.DisplayFor(model => util.PaymentSum)</b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <p>
+        @Html.ActionLink("Повернутися на головну", "Index", "Home", null, new { @class = "btn btn-primary" })
+    </p>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('.monthsList').change(function () {
+                var monthId = $(this).val();
+                window.location.href = '@Url.Action("Index", "PersonalAccount")' + '?monthId=' + monthId;
+            });
+        });
+
+    </script>
+}

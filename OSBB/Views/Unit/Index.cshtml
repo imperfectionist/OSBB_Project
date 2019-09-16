@@ -1,0 +1,60 @@
+﻿@model IEnumerable<OSBB_BLL.Models.UnitDTO>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Одиниці виміру</h2>
+
+<p>
+    @Html.ActionLink("Створити нову", "Edit", new { id = 0 }, new { @class = "btn-sm btn-primary"})
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UnitName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.UnitName)
+        </td>
+        <td>
+            @Html.ActionLink("Редагувати", "Edit", new { id=item.UnitId }, new { @class = "btn-sm btn-primary" }) 
+            @Html.ActionLink("Видалити", "Delete", new { id=item.UnitId }, new { @class = "btn-sm btn-primary delUnit", unit_id = item.UnitId })
+        </td>
+    </tr>
+}
+
+</table>
+
+@section Scripts{
+    <script type="text/javascript">
+
+        $(function () {
+            $(".delUnit").click(function (e) {
+                e.preventDefault()
+                if (confirm('Дійсно видалити запис?')) {
+                    $.ajax({
+                        url: "@Url.Action("Delete", "Unit")",
+                        data: { id: $(this).attr('unit-id') },
+                        type: 'POST',
+                        success: function (data) {
+                            if (data == "OK")
+                                window.location.href = "@Url.Action("Index", "Unit")"
+                            else
+                                alert("Error")
+                        },
+                        error: function (data) {
+                            alert(data);
+                        }
+                    });
+                }
+            });
+        });
+
+    </script>
+    }

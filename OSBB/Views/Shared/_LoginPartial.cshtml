@@ -1,0 +1,17 @@
+﻿@using Microsoft.AspNet.Identity
+@*@if (Request.IsAuthenticated)*@
+    @if (User.Identity.IsAuthenticated)
+    {
+        <ul class="nav navbar-nav navbar-right">
+            <li>@Html.ActionLink(User.Identity.GetUserName(), null, null, null)</li>
+            <li>@Html.ActionLink("Вийти", "Logoff", "Account")</li>
+        </ul>
+    }
+    else
+    {
+        <ul class="nav navbar-nav navbar-right">
+            <li>@Html.ActionLink("Зареєструватися", "Register", "Account")</li>
+            <li>@Html.ActionLink("Увійти", "Login", "Account")</li>
+        </ul>
+    }
+
