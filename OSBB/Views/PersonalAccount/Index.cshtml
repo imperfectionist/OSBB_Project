@@ -1,0 +1,122 @@
+﻿@model OSBB.Models.UserPrivateAccount
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Особистий кабінет</h2>
+
+<div>
+    <h4>Квартира № @ViewBag.ApartmentNumber, О/Р № @ViewBag.AccountNumber</h4>
+    <hr />
+    @if (Model.HasBenefit)
+    {
+        <div class="alert alert-dismissible alert-primary">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Увага!</strong> Розрахунок сум здійснено з урахуванням вашої пільги - @ViewBag.Benefit.
+        </div>
+    }
+    @Html.HiddenFor(model => model.MonthPaymentsId)
+    <div class="row paymentDetails" style="align-items:center">
+        <div class="dropdown col-lg-5">
+            <div cass="bs-component">
+                <h4>
+                    Комунальні послуги за:
+                    @Html.DropDownListFor(model => model.SelectedMonth, Model.AvailableMonths as SelectList, "Оберіть місяць", new { @class = "btn btn-default col-lg-5 border-secondary dropdown-toggle form-control monthsList", month_id = Model.SelectedMonth })
+                </h4>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="bs-component">
+                <h4>
+                    @Html.DisplayNameFor(model => model.TotalCost)
+                    <b class="text-info">@Html.DisplayFor(model => model.TotalCost)</b>
+                </h4>
+            </div>
+        </div>
+        <div class="col-lg-4 bs-component">
+            @if (Model.HasCurrent == true && Model.CurrentMonth == Model.SelectedMonth)
+            {
+                <div>
+                    @Html.ActionLink("Редагувати дані", "Edit", "PersonalAccount", new { id = Model.MonthPaymentsId }, new { @class = "btn btn-primary" })
+                </div>
+            }
+            else if (Model.HasCurrent == false)
+            {
+                <div>
+                    @Html.ActionLink("Внести дані за звітний період", null, null, null, new { @class = "btn btn-primary getUtil" })
+                </div>
+            }
+        </div>
+    </div>
+    <br />
+    <div class="bs-component">
+        <div class="card border-primary" style="display:none;" id="utilList">
+            <div class="card-header">
+                <h4 class="card-title">Оберіть послуги, за якими треба внести показники:</h4>
+            </div>
+            <div class="card-body">
+                @Html.Action("AddCurrentUtilities")
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="container">
+        <div class="bs-component">
+            @foreach (var util in Model.Utilities)
+            {
+                <div class="card border-primary">
+                    <div class="card-header text-white bg-primary">
+                        <h5>@util.UtilityName</h5>
+                    </div>
+                    <table class="table table-bordered table-condensed" style="margin-bottom:0px">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => util.MeterIndexStart)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => util.MeterIndexEnd)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => util.PaymentSum)
+                            </th>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                @Html.DisplayFor(model => util.MeterIndexStart)
+                            </td>
+                            <td align="center">
+                                @Html.DisplayFor(model => util.MeterIndexEnd)
+                            </td>
+                            <td class="text-info" align="center">
+                                <b>@Html.DisplayFor(model => util.PaymentSum)</b>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $(".monthsList").change(function () {
+                var monthId = $(this).val();
+                window.location.href = '@Url.Action("Index", "PersonalAccount")' + '?monthId=' + monthId;
+            });
+        });
+
+    </script>
+
+    <script>
+        $(function () {
+            $(".getUtil").click(function (e) {
+                e.preventDefault();
+                $('#utilList').attr("style","display:inline-block;");
+            });
+        });
+    </script>
+}

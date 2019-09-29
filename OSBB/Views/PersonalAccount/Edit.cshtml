@@ -1,0 +1,64 @@
+﻿@model List<OSBB_BLL.Models.MonthPaymentsDetailDTO>
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Редагування показників</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <div class="bs-component">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @for (int i = 0; i < Model.Count(); i++)
+        {
+            if (Model[i].MeterIndexStart != null)
+            {
+                    <div class="card border-primary">
+                        <div class="card-header text-white bg-primary">
+                            <h5>@Model[i].UtilityName</h5>
+                        </div>
+
+                        @Html.HiddenFor(model => Model[i].MonthPaymentsDetailId)
+                        @Html.HiddenFor(model => Model[i].MonthPaymentsId)
+                        @Html.HiddenFor(model => Model[i].UtilityId)
+                        @Html.HiddenFor(model => Model[i].MeterIndexStart)
+                        @Html.HiddenFor(model => Model[i].UtilityName)
+                        @Html.HiddenFor(model => Model[i].UtilityPrice)
+
+                        <table class="table table-condensed" style="margin-bottom:0px">
+                            <tr>
+                                <th>
+                                    @Html.LabelFor(model => Model[i].MeterIndexStart, htmlAttributes: new { @class = "control-label" })
+                                </th>
+                                <th>
+                                    @Html.LabelFor(model => Model[i].MeterIndexEnd, htmlAttributes: new { @class = "control-label" })
+                                    
+                                </th>
+                            </tr>
+                            <tr>
+                                <td align="center">
+                                    @Html.DisplayFor(model => Model[i].MeterIndexStart, new { htmlAttributes = new { @class = "form-control" } })
+                                </td>
+                                <td align="center">
+                                    @Html.EditorFor(model => Model[i].MeterIndexEnd, new { htmlAttributes = new { @class = "form-control text-danger" } })
+                                    @Html.ValidationMessageFor(model => Model[i].MeterIndexEnd, "", new { @class = "text-danger" })
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+            }
+        }
+        <div class="form-group">
+                <input type="submit" value="Зберегти" class="btn btn-success col-lg-3" />
+        </div>
+    </div>
+</div>
+}
+
+    <div>
+        @Html.ActionLink("Повернутися до загального списку", "Index", new { monthId = ViewBag.MonthNum }, new { @class = "btn btn-primary col-lg-3" })
+    </div>

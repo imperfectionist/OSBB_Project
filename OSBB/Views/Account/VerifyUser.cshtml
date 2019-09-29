@@ -1,0 +1,25 @@
+﻿@model OSBB.Models.VerifyUserModel
+
+@{
+    ViewBag.Title = "VerifyUser";
+}
+
+<div class="bs-component">
+    <br/>
+    <div class="alert alert-primary col-lg-6">
+        <strong>Задля вашої безпеки ми використовуємо для входу двохфакторну ідентифікацію</strong>
+
+        @using (Html.BeginForm("VerifyUser", "Account", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+                <p>Будь-ласка, оберіть спосіб, яким вам зручніше отримати підтвердження для входу:</p>
+                foreach (var provider in Model.Providers)
+                    {
+                <div class="bs-component">
+                    @Html.ActionLink(provider.Text, "VerifyCode", new { provider = provider.Value }, new { @class = "btn btn-info form-control" })
+                </div>
+                    }
+        }
+
+    </div>
+</div>

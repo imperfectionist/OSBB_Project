@@ -1,0 +1,67 @@
+﻿@model IEnumerable<OSBB_BLL.Models.BenefitDTO>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Пільги</h2>
+
+<p>
+    @Html.ActionLink("Додати", "Edit", new { id = 0 }, new { @class = "btn btn-primary"})
+</p>
+<table class="table table-condensed">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.BenefitName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BenefitPercent)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.BenefitName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BenefitPercent)
+        </td>
+        <td>
+            @Html.ActionLink(" ", "Edit", new { id = item.BenefitId }, new { @class = "btn-sm btn-primary fas fa-pencil-alt" })
+            @Html.ActionLink(" ", "Delete", new { id = item.BenefitId }, new { @class = "btn-sm btn-primary fas fa-trash delBenefit", benefit_id = item.BenefitId})
+        </td>
+    </tr>
+}
+
+</table>
+
+@section Scripts{
+    <script type="text/javascript">
+
+        $(function () {
+            $(".delBenefit").click(function (e) {
+                e.preventDefault()
+                if (confirm('Дійсно видалити запис?')) {
+                    $.ajax({
+                        url: "@Url.Action("Delete", "Benefit")",
+                        data: { id: $(this).attr('benefit-id') },
+                        type: 'POST',
+                        success: function (data) {
+                            if (data == "OK")
+                                window.location.href = "@Url.Action("Index", "Benefit")"
+                            else
+                                alert("Error")
+                        },
+                        error: function (data) {
+                            alert(data)
+                        }
+                    });
+                }
+            });
+        });
+
+    </script>
+
+    }

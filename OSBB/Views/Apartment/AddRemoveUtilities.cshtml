@@ -1,0 +1,28 @@
+﻿@model List<OSBB.Models.UtilityCheckListModel>
+
+@using (Html.BeginForm("AddRemoveUtilities", "Apartment", FormMethod.Post))
+{
+    <input type="text" value="@ViewBag.Action" name="action" hidden/>
+    @Html.AntiForgeryToken()
+    <div class="container form-horizontal">
+        <div class="form-group">
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                <p>
+                    @Html.HiddenFor(modelItem => Model[i].UtilityId)
+                    @Html.CheckBoxFor(modelItem => Model[i].IsChecked)
+                    @Html.DisplayFor(modelItem => Model[i].UtilityName)
+                    @Html.HiddenFor(modelItem => Model[i].UtilityName)
+                    @Html.HiddenFor(modelItem => Model[i].UtilityPrice)
+                </p>
+            }
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-lg-offset-1">
+            <input type="submit" value="Зберегти" class="btn btn-primary btn-block" />
+        </div>
+    </div>
+}
+

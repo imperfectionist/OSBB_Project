@@ -1,0 +1,96 @@
+﻿@model IEnumerable<OSBB_BLL.Models.MonthPaymentsDetailDTO>
+
+@{
+    ViewBag.Title = "CurrentUtil";
+}
+
+<h2>Перелік послуг за звітний місяць</h2>
+<h3>Квартира № @ViewBag.Apartment</h3>
+
+<p>
+    @Html.ActionLink("Додати", null, null, new { @class = "btn btn-primary col-lg-2 getUtilAdd" })
+    @Html.ActionLink("Видалити", null, null, new { @class = "btn btn-primary col-lg-2 getUtilDel" })
+</p>
+<div class="bs-component">
+    <div class="card border-primary" style="display:none;" id="utilListAdd">
+        <div class="card-header">
+            <h4 class="card-title">Оберіть послуги, які потрібно додати:</h4>
+        </div>
+        <div class="card-body">
+            @Html.Action("AddRemoveUtilities", new { action = "add" })
+        </div>
+    </div>
+</div>
+<div class="bs-component">
+    <div class="card border-primary" style="display:none;" id="utilListDel">
+        <div class="card-header">
+            <h4 class="card-title">Оберіть послуги, які потрібно видалити:</h4>
+        </div>
+        <div class="card-body">
+            @Html.Action("AddRemoveUtilities", new { action = "del" })
+        </div>
+    </div>
+</div>
+<table class="table table-condensed table-bordered">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UtilityName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MeterIndexStart)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MeterIndexEnd)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PaymentSum)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            @Html.HiddenFor(modelItem => item.MonthPaymentsDetailId)
+            @Html.HiddenFor(modelItem => item.MonthPaymentsId)
+            @Html.HiddenFor(modelItem => item.UtilityId)
+            <td class="text-info">
+                <b>@Html.DisplayFor(modelItem => item.UtilityName)</b>
+            </td>
+            <td align="center">
+                @Html.DisplayFor(modelItem => item.MeterIndexStart)
+            </td>
+            <td align="center">
+                @Html.DisplayFor(modelItem => item.MeterIndexEnd)
+            </td>
+            <td align="center">
+                @Html.DisplayFor(modelItem => item.PaymentSum)
+            </td>
+        </tr>
+    }
+
+</table>
+<p>
+    @Html.ActionLink("Повернутися до списку квартир ", "Index", null, new { @class = "btn btn-primary" })
+</p>
+
+@section Scripts{
+    <script>
+        $(function () {
+            $(".getUtilAdd").click(function (e) {
+                e.preventDefault();
+                $('#utilListDel').attr("style", "display:none;");
+                $('#utilListAdd').attr("style", "display:inline-block;");
+            });
+        });
+    </script>
+
+    <script>
+        $(function () {
+            $(".getUtilDel").click(function (e) {
+                e.preventDefault();
+                $('#utilListAdd').attr("style", "display:none;");
+                $('#utilListDel').attr("style", "display:inline-block;");
+            });
+        });
+    </script>
+}

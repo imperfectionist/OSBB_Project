@@ -1,0 +1,12 @@
+﻿@using Microsoft.AspNet.Identity
+    @if (User.Identity.IsAuthenticated)
+    { 
+            @Html.ActionLink(User.Identity.GetUserName(), null, null, new { @class = "nav-item nav-link disabled" })
+            @Html.ActionLink("Вийти", "Logoff", "Account", null, new { @class = "nav-item nav-link" })
+    }
+    else
+    {
+            @Html.ActionLink("Зареєструватися", "Register", "Account", null, new { @class = "nav-item nav-link" })
+            @Html.ActionLink("Увійти", "Login", "Account", null, new { @class = "nav-item nav-link" })
+    }
+
